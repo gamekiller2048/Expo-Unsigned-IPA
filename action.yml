@@ -5,20 +5,31 @@ inputs:
   PROJECT_NAME:
     description: 'name of expo project'
     required: true
-  
+  CLEAR_CACHE:
+    description: 'whether to clear the last cache'
+    default: 'false'
+    
 runs:
   using: "composite"
   steps:
-    # - name: Cache Build Packages
-    #   id: cache
-    #   uses: actions/cache@v4
-    #   with:
-    #     path: |
-    #       node_modules
-    #       ios
-    #       ~/Library/Developer/Xcode/DerivedData
-    #     key: ${{runner.os}}-packages-${{hashFiles('package-lock.json')}}
-    #     restore-keys: ${{runner.os}}-packages-
+    - name: Remove Cache
+      if: ${{inputs.CLEAR_CACHE}} == 'true'
+      run: |
+        rm -rf node_modules
+        rm -rf ios
+        rm -rf ~/Library/Developer/Xcode/DerivedData
+      shell: bash
+            
+    - name: Cache Build Packages
+      id: cache
+      uses: actions/cache@v4
+      with:
+        path: |
+          node_modules
+          ios
+          ~/Library/Developer/Xcode/DerivedData
+        key: ${{runner.os}}-packages-${{hashFiles('package-lock.json')}}
+        restore-keys: ${{runner.os}}-packages-
        
     - name: Setup Node.js
       uses: actions/setup-node@v3
