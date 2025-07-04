@@ -18,13 +18,11 @@ runs:
           ios
         key: ${{runner.os}}-packages-${{hashFiles('package-lock.json')}}
         restore-keys: ${{runner.os}}-packages-
-      shell: bash
-        
+       
     - name: Setup Node.js
       uses: actions/setup-node@v3
       with:
         node-version: "node"
-      shell: bash
       
     - name: Install Dependencies
       if: steps.cache.outputs.cache-hit != 'true'
@@ -63,4 +61,3 @@ runs:
       with:
         name: ${{inputs.PROJECT_NAME}}.ipa
         path: ios/${{inputs.PROJECT_NAME}}.xcarchive/Products/${{inputs.PROJECT_NAME}}.ipa
-      shell: bash
