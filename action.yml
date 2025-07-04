@@ -38,7 +38,7 @@ runs:
     - name: Build Xcode Project (Unsigned)
       run: |
         cd ios
-        xcodebuild -workspace ${{inputs.PROJECT_NAME}}.xcworkspace -scheme ${{inputs.PROJECT_NAME}} -sdk iphoneos -configuration Release -destination generic/platform=iOS archive -archivePath TonysApp.xcarchive CODE_SIGNING_ALLOWED=NO
+        xcodebuild -workspace ${{inputs.PROJECT_NAME}}.xcworkspace -scheme ${{inputs.PROJECT_NAME}} -sdk iphoneos -configuration Release -destination generic/platform=iOS archive -archivePath ${{inputs.PROJECT_NAME}}.xcarchive CODE_SIGNING_ALLOWED=NO
       shell: bash
       
     - name: Package Unsigned IPA
