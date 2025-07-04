@@ -1,0 +1,58 @@
+name: 'Expo-Unsigned-IPA'
+description: 'unsigned ios ipa build'
+author: 'gamekiller2048'
+inputs:
+  PROJECT_NAME:
+    description: 'name of expo project'
+    required: true
+  
+runs:
+  using: "composite"
+  steps:
+    - name: Cache Build Packages
+      id: cache
+      uses: actions/cache@v4
+      with:
+        path: |
+          node_modules
+          ios
+        key: ${{runner.os}}-packages-${{hashFiles('package-lock.json')}}
+        restore-keys: ${{runner.os}}-packages-
+        
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: "node"
+
+    - name: Install Dependencies
+      if: steps.cache.outputs.cache-hit != 'true'
+      run: npm install
+
+    - name: Build Expo
+      if: steps.cache.outputs.cache-hit != 'true'
+      run: |
+        npx expo prebuild --platform ios
+
+    - name: Build Xcode Project (Unsigned)
+      run: |
+        cd ios
+        xcodebuild -workspace ${{inputs.PROJECT_NAME}}.xcworkspace -scheme ${{inputs.PROJECT_NAME}} -sdk iphoneos -configuration Release -destination generic/platform=iOS archive -archivePath TonysApp.xcarchive CODE_SIGNING_ALLOWED=NO
+
+    - name: Package Unsigned IPA
+      run: |
+        cd ios/${{inputs.PROJECT_NAME}}.xcarchive/Products/Applications
+        mkdir -p Payload
+        mv *.app Payload/
+        zip -r ../${{inputs.PROJECT_NAME}}.ipa Payload
+
+    - name: Debug
+      run: |
+        ls ios
+        ls ios/${{inputs.PROJECT_NAME}}.xcarchive
+        ls ios/${{inputs.PROJECT_NAME}}.xcarchive/Products
+
+    - name: Upload IPA Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{inputs.PROJECT_NAME}}.ipa
+        path: ios/${{inputs.PROJECT_NAME}}.xcarchive/Products/${{inputs.PROJECT_NAME}}.ipa
