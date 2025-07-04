@@ -16,6 +16,7 @@ runs:
     #     path: |
     #       node_modules
     #       ios
+    #       ~/Library/Developer/Xcode/DerivedData
     #     key: ${{runner.os}}-packages-${{hashFiles('package-lock.json')}}
     #     restore-keys: ${{runner.os}}-packages-
        
