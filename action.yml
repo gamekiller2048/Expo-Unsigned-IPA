@@ -61,12 +61,12 @@ runs:
         zip -r ../${{inputs.PROJECT_NAME}}.ipa Payload
       shell: bash
 
-    - name: Debug
-      run: |
-        ls ios
-        ls ios/${{inputs.PROJECT_NAME}}.xcarchive
-        ls ios/${{inputs.PROJECT_NAME}}.xcarchive/Products
-      shell: bash
+    # - name: Debug
+    #   run: |
+    #     ls ios
+    #     ls ios/${{inputs.PROJECT_NAME}}.xcarchive
+    #     ls ios/${{inputs.PROJECT_NAME}}.xcarchive/Products
+    #   shell: bash
       
     - name: Upload IPA Artifact
       uses: actions/upload-artifact@v4
