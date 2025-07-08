@@ -15,7 +15,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Expo Build Unsigned IPA
-        uses: gamekiller2048/expo-unsigned-ipa@main
+        uses: gamekiller2048/expo-unsigned-ipa@v1
         with:
           PROJECT_NAME: '[MY EXPO PROJECT NAME]'
 
