@@ -2,9 +2,6 @@ example usage:
 ```
 name: Build iOS IPA
 
-env:
-  PROJECT_NAME: "tracker"
-
 on:
   push:
     branches:
